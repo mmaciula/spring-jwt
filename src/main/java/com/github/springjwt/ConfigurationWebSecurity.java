@@ -1,5 +1,8 @@
 package com.github.springjwt;
 
+import com.github.springjwt.security.jwt.filter.TokenAuthenticationFilter;
+import com.github.springjwt.security.spring.Http401UnauthorizedEntryPoint;
+import com.github.springjwt.security.spring.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -60,9 +63,13 @@ public class ConfigurationWebSecurity extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        http.httpBasic().authenticationEntryPoint(http401UnauthorizedEntryPoint)
-                .add().anonymous()
-                .add().sessionManager().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .add.csrf().disabled();
+        http.httpBasic()
+                .authenticationEntryPoint(http401UnauthorizedEntryPoint)
+                .and()
+                    .anonymous()
+                .and()
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                    .csrf().disable();
     }
 }
