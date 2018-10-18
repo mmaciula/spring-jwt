@@ -49,7 +49,7 @@ public class ConfigurationWebSecurity extends WebSecurityConfigurerAdapter {
 
     @Bean
     @Override
-    @Qualifier("customAuthentictionManager")
+    @Qualifier("customAuthenticationManager")
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
