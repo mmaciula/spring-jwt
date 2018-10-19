@@ -1,5 +1,7 @@
 package com.github.springjwt;
 
+import com.github.springjwt.domain.user.User;
+import com.github.springjwt.domain.user.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +15,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.Filter;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -29,21 +30,35 @@ public class ConnectControllerTest {
     private WebApplicationContext context;
     @Autowired
     private Filter springSecurityFilterChain;
+    @Autowired
+    private UserRepository userRepository;
 
     @Before
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .addFilters(springSecurityFilterChain)
-                .defaultRequest(get("/")/*.with(httpBasic("user@test.pl", "password"))*/)
+                .defaultRequest(get("/"))
                 .build();
     }
 
     @Test
     public void shouldTestAuthentication() throws Exception {
+        createTestUser();
+
         String result = mockMvc.perform(post("/authentication")
                 .param("email", "user@test.pl").param("password", "password"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token").exists())
                 .andReturn().getResponse().getContentAsString();
+    }
+
+    private void createTestUser(){
+        User user = new User();
+        user.setEmail("user@test.pl");
+        user.setPassword("5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8"); //password
+        user.setUsername("TestUser");
+        user.setSalt(null); // no salt needed
+
+        userRepository.save(user);
     }
 }
