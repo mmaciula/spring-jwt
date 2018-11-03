@@ -42,8 +42,7 @@ public class DaoUserDetailService implements UserDetailsService {
         grantedAuthorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.USER));
 
         // TODO: Checked if the User is activated
-        return new PrincipalUser(user.getEmail(), user.getPassword(), user.getSalt(), grantedAuthorities,
-                user.getId());
+        return new PrincipalUser(user.getEmail(), user.getPassword(), grantedAuthorities, user.getId());
     }
 
     public void setUserRepository(UserRepository userRepository){

@@ -2,7 +2,6 @@ package com.github.springjwt;
 
 import com.github.springjwt.security.jwt.filter.TokenAuthenticationFilter;
 import com.github.springjwt.security.spring.Http401UnauthorizedEntryPoint;
-import com.github.springjwt.security.spring.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -36,13 +36,10 @@ public class ConfigurationWebSecurity extends WebSecurityConfigurerAdapter {
 
     @Bean
     public DaoAuthenticationProvider customAuthenticationProvider(){
-        ReflectionSaltSource saltSource = new ReflectionSaltSource();
-        saltSource.setUserPropertyToUse("salt");
 
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder);
-        authenticationProvider.setSaltSource(saltSource);
 
         return authenticationProvider;
     }

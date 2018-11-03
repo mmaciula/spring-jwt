@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,6 +33,8 @@ public class ConnectControllerTest {
     private Filter springSecurityFilterChain;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Before
     public void setup() {
@@ -55,9 +58,8 @@ public class ConnectControllerTest {
     private void createTestUser(){
         User user = new User();
         user.setEmail("user@test.pl");
-        user.setPassword("5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8"); //password
+        user.setPassword(passwordEncoder.encode("password"));
         user.setUsername("TestUser");
-        user.setSalt(null); // no salt needed
 
         userRepository.save(user);
     }
