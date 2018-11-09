@@ -1,11 +1,10 @@
-package com.github.springjwt.domain.user;
+package com.github.springjwt.security.repository;
 
+import com.github.springjwt.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
-
 @Repository
-public interface UserRepository extends JpaRepository<User, UUID> {
+public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
 }
