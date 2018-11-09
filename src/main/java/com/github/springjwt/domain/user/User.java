@@ -1,9 +1,12 @@
 package com.github.springjwt.domain.user;
 
+import com.github.springjwt.domain.authority.Authority;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -32,6 +35,13 @@ public class User {
     @Column(name = "lastpasswordresetdate")
     @NotNull
     private Date lastPasswordResetDate;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_authority",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "id")}
+    )
+    private List<Authority> authorities;
 
     public Long getId() {
         return id;
@@ -79,5 +89,13 @@ public class User {
 
     public void setLastPasswordResetDate(Date lastPasswordResetDate) {
         this.lastPasswordResetDate = lastPasswordResetDate;
+    }
+
+    public List<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
     }
 }
