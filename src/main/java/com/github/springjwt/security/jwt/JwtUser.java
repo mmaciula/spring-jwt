@@ -1,4 +1,4 @@
-package com.github.springjwt.security;
+package com.github.springjwt.security.jwt;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
