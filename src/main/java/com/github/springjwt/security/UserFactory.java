@@ -2,6 +2,7 @@ package com.github.springjwt.security;
 
 import com.github.springjwt.domain.authority.Authority;
 import com.github.springjwt.domain.user.User;
+import com.github.springjwt.security.jwt.JwtUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
