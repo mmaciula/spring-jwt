@@ -1,5 +1,6 @@
 package com.github.springjwt.security.jwt.filter;
 
+import com.github.springjwt.security.jwt.TokenUtil;
 import com.github.springjwt.security.jwt.service.DaoUserDetailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +18,13 @@ public class AuthorizationTokenFilter extends OncePerRequestFilter {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final DaoUserDetailService userDetailService;
     private final String tokenHeader;
+    private final TokenUtil tokenUtil;
 
-    public AuthorizationTokenFilter(DaoUserDetailService userDetailService, String tokenHeader) {
+    public AuthorizationTokenFilter(DaoUserDetailService userDetailService, TokenUtil tokenUtil,
+                                    String tokenHeader) {
         this.userDetailService = userDetailService;
         this.tokenHeader = tokenHeader;
+        this.tokenUtil = tokenUtil;
     }
 
     @Override
@@ -35,7 +39,11 @@ public class AuthorizationTokenFilter extends OncePerRequestFilter {
 
         if (requestHeader != null && requestHeader.startsWith("Bearer ")) {
             authToken = requestHeader.substring(7);
-            // TODO get username from token (create TokenUtils class)
+            username = tokenUtil.getUsernameFromToken(authToken);
+        } else {
+            logger.warn("Bearer string not found!");
         }
+
+        filterChain.doFilter(request, response);
     }
 }
