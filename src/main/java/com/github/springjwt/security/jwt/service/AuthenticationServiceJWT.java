@@ -1,28 +1,19 @@
 package com.github.springjwt.security.jwt.service;
 
-import com.github.springjwt.security.PrincipalUser;
-import com.github.springjwt.security.jwt.TokenManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 @Component
-public class AuthenticationServiceJWT {
-    @Autowired
-    private TokenManager tokenManager;
+public class AuthenticationServiceJWT implements Serializable {
+    private static final long serialVersionUID = 1250166508152483573L;
+    private final String token;
 
-    public boolean authenticateWithJwtToken(final String token){
-        PrincipalUser principalUser = tokenManager.getUserDetails(token);
+    public AuthenticationServiceJWT(String token) {
+        this.token = token;
+    }
 
-        if (principalUser != null){
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(principalUser,
-                    null, principalUser.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authToken);
-
-            return true;
-        }
-
-        return false;
+    public String getToken() {
+        return token;
     }
 }
