@@ -4,6 +4,7 @@ import com.github.springjwt.security.jwt.TokenUtil;
 import com.github.springjwt.security.jwt.service.DaoUserDetailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -21,7 +22,7 @@ public class AuthorizationTokenFilter extends OncePerRequestFilter {
     private final TokenUtil tokenUtil;
 
     public AuthorizationTokenFilter(DaoUserDetailService userDetailService, TokenUtil tokenUtil,
-                                    String tokenHeader) {
+                                    @Value("${jwt.header}") String tokenHeader) {
         this.userDetailService = userDetailService;
         this.tokenHeader = tokenHeader;
         this.tokenUtil = tokenUtil;
