@@ -51,7 +51,7 @@ public class TokenUtil implements Serializable {
                 .setSubject(subject)
                 .setIssuedAt(createdDate)
                 .setExpiration(expirationDate)
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(SignatureAlgorithm.HS512, this.secret)
                 .compact();
     }
 
