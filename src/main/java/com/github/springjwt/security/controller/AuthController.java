@@ -5,7 +5,6 @@ import com.github.springjwt.security.jwt.TokenUtil;
 import com.github.springjwt.security.jwt.service.AuthenticationServiceJWT;
 import com.github.springjwt.security.jwt.service.DaoUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,16 +24,16 @@ public class AuthController {
     @Autowired
     private TokenUtil tokenUtil;
     @Autowired
-    @Qualifier("jwtUserDetailsService")
+    //@Qualifier("jwtUserDetailsService")
     private DaoUserDetailService userDetailService;
 
-    @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
+    @RequestMapping(value = "${jwt.authentication.path}", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthRequest authenticationRequest) {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
         final UserDetails userDetails = userDetailService
                 .loadUserByUsername(authenticationRequest.getUsername());
-        final String token = tokenUtil.generateToken(userDetails);
+        String token = tokenUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new AuthenticationServiceJWT(token));
     }

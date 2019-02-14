@@ -32,13 +32,14 @@ public class TokenUtilTest {
                 .thenReturn(DateUtil.yesterday())
                 .thenReturn(DateUtil.now());
 
-            String token = createToken();
-            String tokenLater = createToken();
+        String token = createToken();
+        String tokenLater = createToken();
 
-            assertThat(token).isNotEqualTo(tokenLater);
+        assertThat(token).isNotEqualTo(tokenLater);
     }
 
     private String createToken() {
-        return tokenUtil.generateToken(new TestUser(USERNAME));
+        String token = tokenUtil.generateToken(new TestUser(USERNAME));
+        return token;
     }
 }
