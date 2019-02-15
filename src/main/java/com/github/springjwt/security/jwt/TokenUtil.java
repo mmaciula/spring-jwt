@@ -21,7 +21,7 @@ public class TokenUtil implements Serializable {
     @Value("${jwt.secret}")
     private String secret;
     private Clock clock = DefaultClock.INSTANCE;
-    @Value("${jwt.expires.days}")
+    @Value("${jwt.expiration}")
     private Long expiration;
 
     public String getUsernameFromToken(String token) {

@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -15,7 +16,6 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class TokenUtilTest {
     private final String USERNAME = "testUser";
-
     @Mock
     private Clock clockMock;
     @InjectMocks
@@ -24,6 +24,9 @@ public class TokenUtilTest {
     @Before
     public void setup(){
         MockitoAnnotations.initMocks(this);
+
+        ReflectionTestUtils.setField(tokenUtil, "expiration", 1800L);
+        ReflectionTestUtils.setField(tokenUtil, "secret", "mySecret");
     }
 
     @Test
