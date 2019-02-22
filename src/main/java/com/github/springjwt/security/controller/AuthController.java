@@ -28,7 +28,8 @@ public class AuthController {
     private DaoUserDetailService userDetailService;
 
     @RequestMapping(value = "${jwt.authentication.path}", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthRequest authenticationRequest) {
+    public ResponseEntity<AuthenticationServiceJWT> createAuthenticationToken(@RequestBody AuthRequest
+                                                                                          authenticationRequest) {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
         final UserDetails userDetails = userDetailService
