@@ -20,7 +20,7 @@ public class TokenUtil implements Serializable {
     private static final long serialVersionUID = -3301605591108950415L;
     @Value("${jwt.secret}")
     private String secret;
-    private Clock clock = DefaultClock.INSTANCE;
+    private transient Clock clock = DefaultClock.INSTANCE;
     @Value("${jwt.expiration}")
     private Long expiration;
 
