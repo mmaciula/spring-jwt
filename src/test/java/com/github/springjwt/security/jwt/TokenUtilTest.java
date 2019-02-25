@@ -41,6 +41,17 @@ public class TokenUtilTest {
         assertThat(token).isNotEqualTo(tokenLater);
     }
 
+    @Test
+    public void testGettingUsernameFromToken() {
+        when(clockMock.now()).thenReturn(DateUtil.now());
+
+        String token = createToken();
+
+        // TODO Handle throwing UnsupportedJwtException
+
+        assertThat(tokenUtil.getUsernameFromToken(token)).isEqualTo(USERNAME);
+    }
+
     private String createToken() {
         String token = tokenUtil.generateToken(new TestUser(USERNAME));
         return token;
