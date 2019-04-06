@@ -10,6 +10,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.Date;
+
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -50,6 +52,17 @@ public class TokenUtilTest {
         // TODO Handle throwing UnsupportedJwtException
 
         assertThat(tokenUtil.getUsernameFromToken(token)).isEqualTo(USERNAME);
+    }
+
+    @Test
+    public void testGettingCreatedDateFromToken() {
+        final Date now = DateUtil.now();
+
+        when(clockMock.now()).thenReturn(now);
+
+        String token = createToken();
+
+        assertThat(tokenUtil.getDateFromToken(token)).isInSameMinuteWindowAs(now);
     }
 
     private String createToken() {

@@ -33,13 +33,25 @@ public class TokenUtil implements Serializable {
         return resolverClaims.apply(claims);
     }
 
+    public Date getDateFromToken(String token) {
+        return getClaimFromToken(token, Claims::getIssuedAt);
+    }
+
+    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = getAllClaimsFromToken(token);
+        return claimsResolver.apply(claims);
+    }
+
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJwt(token).getBody();
+        return Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJwt(token)
+                .getBody();
     }
 
     private String doGenerateToken(Map<String, Object> claims, String subject) {
