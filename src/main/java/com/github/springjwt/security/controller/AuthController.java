@@ -10,10 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AuthController {
@@ -27,7 +24,7 @@ public class AuthController {
     //@Qualifier("jwtUserDetailsService")
     private DaoUserDetailService userDetailService;
 
-    @RequestMapping(value = "${jwt.authentication.path}", method = RequestMethod.POST)
+    @PostMapping(value = "${jwt.authentication.path}")
     public ResponseEntity<AuthenticationServiceJWT> createAuthenticationToken(@RequestBody AuthRequest
                                                                                           authenticationRequest) {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());

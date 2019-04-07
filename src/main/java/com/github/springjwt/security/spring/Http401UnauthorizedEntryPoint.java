@@ -15,7 +15,6 @@ import java.io.Serializable;
 
 @Component
 public class Http401UnauthorizedEntryPoint implements AuthenticationEntryPoint, Serializable {
-    private static final long SERIAL_VERSION_UID = -8970718410437077606L;
 
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,

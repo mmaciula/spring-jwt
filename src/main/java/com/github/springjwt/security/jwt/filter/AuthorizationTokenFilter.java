@@ -16,7 +16,7 @@ import java.io.IOException;
 
 @Component
 public class AuthorizationTokenFilter extends OncePerRequestFilter {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger myLogger = LoggerFactory.getLogger(this.getClass());
     private final DaoUserDetailService userDetailService;
     private final String tokenHeader;
     private final TokenUtil tokenUtil;
@@ -31,7 +31,7 @@ public class AuthorizationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        logger.debug("Authentication for ", request.getRequestURL());
+        myLogger.debug("Authentication for ", request.getRequestURL());
 
         final String requestHeader = request.getHeader(tokenHeader);
 
@@ -42,7 +42,7 @@ public class AuthorizationTokenFilter extends OncePerRequestFilter {
             authToken = requestHeader.substring(7);
             username = tokenUtil.getUsernameFromToken(authToken);
         } else {
-            logger.warn("Bearer string not found!");
+            myLogger.warn("Bearer string not found!");
         }
 
         filterChain.doFilter(request, response);
