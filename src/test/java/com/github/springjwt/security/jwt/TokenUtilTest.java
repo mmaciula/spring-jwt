@@ -47,9 +47,7 @@ public class TokenUtilTest {
     public void testGettingUsernameFromToken() {
         when(clockMock.now()).thenReturn(DateUtil.now());
 
-        String token = createToken();
-
-        // TODO Handle throwing UnsupportedJwtException
+        final String token = createToken();
 
         assertThat(tokenUtil.getUsernameFromToken(token)).isEqualTo(USERNAME);
     }
@@ -60,9 +58,9 @@ public class TokenUtilTest {
 
         when(clockMock.now()).thenReturn(now);
 
-        String token = createToken();
+        final String token = createToken();
 
-        assertThat(tokenUtil.getDateFromToken(token)).isInSameMinuteWindowAs(now);
+        assertThat(tokenUtil.getIssuedAtDateFromToken(token)).isInSameMinuteWindowAs(now);
     }
 
     private String createToken() {

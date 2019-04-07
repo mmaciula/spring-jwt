@@ -18,22 +18,17 @@ import java.util.function.Function;
 @Component
 public class TokenUtil implements Serializable {
     private static final long serialVersionUID = -3301605591108950415L;
+    private transient Clock clock = DefaultClock.INSTANCE;
     @Value("${jwt.secret}")
     private String secret;
-    private transient Clock clock = DefaultClock.INSTANCE;
     @Value("${jwt.expiration}")
     private Long expiration;
 
     public String getUsernameFromToken(String token) {
-        return getClaimsFromToken(token, Claims::getSubject);
+        return getClaimFromToken(token, Claims::getSubject);
     }
 
-    public <T> T getClaimsFromToken(String token, Function<Claims, T> resolverClaims) {
-        final Claims claims = getAllClaimsFromToken(token);
-        return resolverClaims.apply(claims);
-    }
-
-    public Date getDateFromToken(String token) {
+    public Date getIssuedAtDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getIssuedAt);
     }
 
@@ -42,16 +37,16 @@ public class TokenUtil implements Serializable {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, userDetails.getUsername());
-    }
-
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(secret)
-                .parseClaimsJwt(token)
+                .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        return doGenerateToken(claims, userDetails.getUsername());
     }
 
     private String doGenerateToken(Map<String, Object> claims, String subject) {
@@ -63,7 +58,7 @@ public class TokenUtil implements Serializable {
                 .setSubject(subject)
                 .setIssuedAt(createdDate)
                 .setExpiration(expirationDate)
-                .signWith(SignatureAlgorithm.HS512, this.secret)
+                .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
 
