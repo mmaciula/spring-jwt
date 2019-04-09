@@ -8,7 +8,7 @@
 ## Technologies used
 
 * languages: **Java**,
-* frameworks: **Spring Boot**,
+* frameworks: **Spring Boot**, **Spring** (**Data**),
 * tests: **JUnit**, **Mockito**,
 * tools: **Maven**, **SonarQube**,
 * others: **JPA**, **JWT**.
