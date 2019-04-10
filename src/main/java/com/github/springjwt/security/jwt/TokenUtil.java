@@ -28,13 +28,17 @@ public class TokenUtil implements Serializable {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
-    public Date getIssuedAtDateFromToken(String token) {
+    public Date getIssuedDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getIssuedAt);
     }
 
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
+    }
+
+    public Date getExpirationDateFromToken(String token) {
+        return getClaimFromToken(token, Claims::getExpiration);
     }
 
     private Claims getAllClaimsFromToken(String token) {

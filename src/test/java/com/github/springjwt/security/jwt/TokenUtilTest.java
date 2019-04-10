@@ -13,6 +13,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.Date;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.assertj.core.api.Java6Assertions.within;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -44,7 +45,7 @@ public class TokenUtilTest {
     }
 
     @Test
-    public void testGettingUsernameFromToken() {
+    public void testGetUsernameFromToken() {
         when(clockMock.now()).thenReturn(DateUtil.now());
 
         final String token = createToken();
@@ -53,14 +54,26 @@ public class TokenUtilTest {
     }
 
     @Test
-    public void testGettingCreatedDateFromToken() {
+    public void testGetIssuedDateFromToken() {
         final Date now = DateUtil.now();
 
         when(clockMock.now()).thenReturn(now);
 
         final String token = createToken();
 
-        assertThat(tokenUtil.getIssuedAtDateFromToken(token)).isInSameMinuteWindowAs(now);
+        assertThat(tokenUtil.getIssuedDateFromToken(token)).isInSameMinuteWindowAs(now);
+    }
+
+    @Test
+    public void testGetExpirationDate() {
+        final Date currentDate = DateUtil.now();
+
+        when(clockMock.now()).thenReturn(currentDate);
+
+        final String token = createToken();
+        final Date expirationDate = tokenUtil.getExpirationDateFromToken(token);
+
+        assertThat(DateUtil.timeDifference(expirationDate, currentDate)).isCloseTo(1800000L, within(1000L));
     }
 
     private String createToken() {
